@@ -15,7 +15,7 @@ function App() {
     e.preventDefault();
     if (editId) {
       axios
-        .put(`https://backend-kappa-lilac-14.vercel.app/items${editId}`, { name: text })
+        .put(`https://backend-kappa-lilac-14.vercel.app/items/${editId}`, { name: text })
         .then(() => reload());
     } else {
       axios
@@ -25,7 +25,7 @@ function App() {
   }
 
   function del(id) {
-    axios.delete(`https://backend-kappa-lilac-14.vercel.app/items${id}`).then(() => reload());
+    axios.delete(`https://backend-kappa-lilac-14.vercel.app/items/${id}`).then(() => reload());
   }
 
   function reload() {

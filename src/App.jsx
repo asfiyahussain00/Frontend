@@ -7,29 +7,27 @@ function App() {
   const [items, setItems] = useState([]);
   const [editId, setEditId] = useState("");
 
+  const API_BASE = "https://backend-kappa-lilac-14.vercel.app/items";
+
   useEffect(() => {
-    axios.get("http://localhost:5000/items").then((res) => setItems(res.data));
+    axios.get(API_BASE).then((res) => setItems(res.data));
   }, []);
 
   function save(e) {
     e.preventDefault();
     if (editId) {
-      axios
-        .put(`http://localhost:5000/items/${editId}`, { name: text })
-        .then(() => reload());
+      axios.put(`${API_BASE}/${editId}`, { name: text }).then(() => reload());
     } else {
-      axios
-        .post("http://localhost:5000/items", { name: text })
-        .then(() => reload());
+      axios.post(API_BASE, { name: text }).then(() => reload());
     }
   }
 
   function del(id) {
-    axios.delete(`http://localhost:5000/items/${id}`).then(() => reload());
+    axios.delete(`${API_BASE}/${id}`).then(() => reload());
   }
 
   function reload() {
-    axios.get("http://localhost:5000/items").then((res) => {
+    axios.get(API_BASE).then((res) => {
       setItems(res.data);
       setText("");
       setEditId("");

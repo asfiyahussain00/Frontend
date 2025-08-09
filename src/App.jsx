@@ -7,48 +7,33 @@ function App() {
   const [items, setItems] = useState([]);
   const [editId, setEditId] = useState("");
 
-  const API_BASE = "https://backend-kappa-lilac-14.vercel.app/items";
-
   useEffect(() => {
-    fetchItems();
+    axios.get("https://backend-kappa-lilac-14.vercel.app/items").then((res) => setItems(res.data));
   }, []);
 
-  async function fetchItems() {
-    try {
-      const res = await axios.get(API_BASE);
-      setItems(res.data);
-    } catch (err) {
-      console.error("Error fetching items:", err);
-    }
-  }
-
-  async function save(e) {
+  function save(e) {
     e.preventDefault();
-    try {
-      if (editId) {
-        await axios.put(`${API_BASE}/${editId}`, { name: text });
-      } else {
-        await axios.post(API_BASE, { name: text });
-      }
-      reload();
-    } catch (err) {
-      console.error("Error saving item:", err);
+    if (editId) {
+      axios
+        .put(`https://backend-kappa-lilac-14.vercel.app/items${editId}`, { name: text })
+        .then(() => reload());
+    } else {
+      axios
+        .post("https://backend-kappa-lilac-14.vercel.app/items", { name: text })
+        .then(() => reload());
     }
   }
 
-  async function del(id) {
-    try {
-      await axios.delete(`${API_BASE}/${id}`);
-      reload();
-    } catch (err) {
-      console.error("Error deleting item:", err);
-    }
+  function del(id) {
+    axios.delete(`https://backend-kappa-lilac-14.vercel.app/items${id}`).then(() => reload());
   }
 
   function reload() {
-    fetchItems();
-    setText("");
-    setEditId("");
+    axios.get("https://backend-kappa-lilac-14.vercel.app/items").then((res) => {
+      setItems(res.data);
+      setText("");
+      setEditId("");
+    });
   }
 
   return (
